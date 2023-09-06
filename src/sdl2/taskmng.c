@@ -1,5 +1,6 @@
 #include	"compiler.h"
 #include	"inputmng.h"
+#include	"mousemng.h"
 #include	"taskmng.h"
 #include	"sdlkbd.h"
 #include "sysmenu.h"
@@ -36,6 +37,7 @@ void taskmng_rol(void) {
 	switch(e.type) {
 		case SDL_MOUSEMOTION:
 			if (menuvram == NULL) {
+				mousemng_onmove(&e.motion);
 			}
 			else {
 				menubase_moving(e.motion.x, e.motion.y, 0);
@@ -61,11 +63,20 @@ void taskmng_rol(void) {
 #endif
 					else
 					{
-						sysmenu_menuopen(0, e.button.x, e.button.y);
+						mousemng_buttonevent(&e.button);
 					}
 					break;
 
 				case SDL_BUTTON_RIGHT:
+					if (menuvram == NULL)
+						mousemng_buttonevent(&e.button);
+					break;
+
+				case SDL_BUTTON_MIDDLE:
+					if (menuvram == NULL)
+						sysmenu_menuopen(0, e.button.x, e.button.y);
+					else
+						menubase_close();
 					break;
 			}
 			break;
@@ -74,12 +85,14 @@ void taskmng_rol(void) {
 			switch(e.button.button) {
 				case SDL_BUTTON_LEFT:
 					if (menuvram != NULL)
-					{
 						menubase_moving(e.button.x, e.button.y, 1);
-					}
+					else
+						mousemng_buttonevent(&e.button);
 					break;
 
 				case SDL_BUTTON_RIGHT:
+					if (menuvram == NULL)
+						mousemng_buttonevent(&e.button);
 					break;
 			}
 			break;
