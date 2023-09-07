@@ -1766,7 +1766,7 @@ static void vramsub_colex24(VRAMHDL dst, const VRAMHDL src, UINT32 color,
 
 // ----
 
-// �T�[�t�F�X���o�b�t�@�Ƃ��Ďg���ꍇ�c
+// サーフェスをバッファとして使う場合…
 // dst(posx, posy) <-src:rct
 
 void vramcpy_cpy(VRAMHDL dst, const POINT_T *pt,
@@ -2008,7 +2008,7 @@ void vramcpy_mosaic(VRAMHDL dst, const POINT_T *pt,
 
 // ----
 
-// �T�[�t�F�X���E�B���h�E�Ƃ��Ďg���ꍇ�c
+// サーフェスをウィンドウとして使う場合…
 // dst:rct <- src(posx, posy)
 
 void vrammix_cpy(VRAMHDL dst, const RECT_T *rct,
