@@ -31,10 +31,11 @@ void taskmng_rol(void) {
 
 	SDL_Event	e;
 
-	if ((!task_avail) || (!SDL_PollEvent(&e))) {
+	if (!task_avail) {
 		return;
 	}
-	switch(e.type) {
+	while (SDL_PollEvent(&e)) {
+		switch(e.type) {
 		case SDL_MOUSEMOTION:
 			if (menuvram == NULL) {
 				mousemng_onmove(&e.motion);
@@ -118,6 +119,7 @@ void taskmng_rol(void) {
 		case SDL_QUIT:
 			task_avail = FALSE;
 			break;
+		}
 	}
 }
 

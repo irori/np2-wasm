@@ -26,9 +26,6 @@
 
 
 		NP2OSCFG	np2oscfg = {0, 0, 0, 0, 0};
-static	UINT		framecnt;
-static	UINT		waitcnt;
-static	UINT		framemax = 1;
 
 static void usage(const char *progname) {
 
@@ -96,6 +93,24 @@ static int flagload(const char *ext, const char *title, BOOL force) {
 
 // ---- proc
 
+#ifdef __EMSCRIPTEN__
+
+void main_loop() {
+	UINT cnt = timing_getcount();
+	if (cnt > 12)
+		cnt = 12;
+	timing_setcount(0);
+	taskmng_rol();
+	while (cnt-- > 0)
+		pccore_exec(cnt == 0);
+}
+
+#else  //  __EMSCRIPTEN__
+
+static	UINT		framecnt;
+static	UINT		waitcnt;
+static	UINT		framemax = 1;
+
 #define	framereset(cnt)		framecnt = 0
 
 static void processwait(UINT cnt) {
@@ -108,6 +123,8 @@ static void processwait(UINT cnt) {
 		taskmng_sleep(1);
 	}
 }
+
+#endif  //  __EMSCRIPTEN__
 
 int np2_main(int argc, char *argv[]) {
 
@@ -157,7 +174,9 @@ int np2_main(int argc, char *argv[]) {
 	pccore_init();
 	S98_init();
 
+#ifndef __EMSCRIPTEN__
 	mousemng_hidecursor();
+#endif
 	scrndraw_redraw();
 	pccore_reset();
 
@@ -168,6 +187,9 @@ int np2_main(int argc, char *argv[]) {
 		}
 	}
 
+#ifdef __EMSCRIPTEN__
+	emscripten_set_main_loop(main_loop, 0, 1);
+#else
 	while(taskmng_isavail()) {
 		taskmng_rol();
 		if (np2oscfg.NOWAIT) {
@@ -225,6 +247,7 @@ int np2_main(int argc, char *argv[]) {
 			}
 		}
 	}
+#endif
 
 	pccore_cfgupdate();
 	if (np2oscfg.resume) {
