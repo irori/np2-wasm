@@ -1,0 +1,10 @@
+{
+    "compilerOptions": {
+        "module": "es2022",
+        "target": "es2020",
+        "outDir": "../example",
+        "newLine": "LF",
+        "noImplicitAny": true,
+        "sourceMap": false
+    }
+}

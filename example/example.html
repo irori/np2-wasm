@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Neko Project II</title>
+    <style>
+      .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
+      textarea.emscripten { font-family: monospace; width: 80%; }
+      div.emscripten { text-align: center; }
+      div.emscripten_border { border: 1px solid black; }
+      /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
+      canvas.emscripten { border: 0px none; }
+      .pixelated { image-rendering: pixelated; image-rendering: -moz-crisp-edges; }
+    </style>
+  </head>
+  <body>
+    <div class="emscripten_border">
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+    </div>
+    <hr/>
+    <div class="emscripten">
+      <label for="smoothing">
+        <input type="checkbox" id="smoothing" checked onclick="document.getElementById('canvas').classList.toggle('pixelated')">Smoothing
+      </label>
+      <input type="checkbox" id="resize">Resize canvas
+      <input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer
+      &nbsp;&nbsp;&nbsp;
+      <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(document.getElementById('pointerLock').checked,
+                                                                                document.getElementById('resize').checked)">
+    </div>
+    <script type="module" src="example.js"></script>
+  </body>
+</html>

@@ -1,0 +1,19 @@
+{
+  "name": "np2",
+  "version": "0.0.0",
+  "description": "",
+  "main": "example/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irori/np2-wasm.git"
+  },
+  "author": "irori <irorin@gmail.com>",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "@types/emscripten": "^1.39.7",
+    "typescript": "^5.2.2"
+  }
+}
