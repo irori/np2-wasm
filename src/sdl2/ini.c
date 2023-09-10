@@ -6,6 +6,7 @@
 #include	"ini.h"
 #include	"pccore.h"
 
+#ifndef __EMSCRIPTEN__
 
 typedef struct {
 const char		*title;
@@ -280,6 +281,29 @@ const INITBL	*pterm;
 	file_close(fh);
 }
 
+#else // __EMSCRIPTEN__
+
+void ini_read(const char *path, const char *title,
+											const INITBL *tbl, UINT count) {
+	int i;
+	for (i = 0; i < count; i++) {
+		EM_ASM_({
+				Module.getConfig($0, $1, $2, $3);
+			}, tbl[i].item, tbl[i].itemtype, tbl[i].value, tbl[i].size);
+	}
+}
+
+void ini_write(const char *path, const char *title,
+											const INITBL *tbl, UINT count) {
+	int i;
+	for (i = 0; i < count; i++) {
+		EM_ASM_({
+				Module.setConfig($0, $1, $2, $3);
+			}, tbl[i].item, tbl[i].itemtype, tbl[i].value, tbl[i].size);
+	}
+}
+
+#endif // __EMSCRIPTEN__
 
 // ----
 

@@ -1,5 +1,7 @@
 export interface NP2Module extends EmscriptenModule {
     FS: typeof FS & { filesystems: { IDBFS: typeof IDBFS } };
+    UTF8ToString: typeof UTF8ToString;
+    stringToUTF8: typeof stringToUTF8;
     addRunDependency: typeof addRunDependency;
     removeRunDependency: typeof removeRunDependency;
     canvas: HTMLCanvasElement;

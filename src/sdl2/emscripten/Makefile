@@ -59,7 +59,7 @@ CPPSRCS	=	./main.c \
 
 OBJS = $(addsuffix .o,$(basename $(CPPSRCS)))
 LIBS = -lm $(SDL_LFLAGS)
-MODULARIZE = -s MODULARIZE=1 -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=FS,addRunDependency,removeRunDependency'
+MODULARIZE = -s MODULARIZE=1 -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=FS,UTF8ToString,stringToUTF8,addRunDependency,removeRunDependency'
 
 .SUFFIXES: .c.o
 .SUFFIXES: .cpp.o
