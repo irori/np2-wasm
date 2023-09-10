@@ -2,6 +2,7 @@
 // #include	<sys/time.h>
 // #include	<signal.h>
 // #include	<unistd.h>
+#include	"mousemng.h"
 #include	"scrnmng.h"
 #include	"scrndraw.h"
 #include "embed/menubase/menubase.h"
@@ -336,6 +337,7 @@ BRESULT scrnmng_entermenu(SCRNMENU *smenu) {
 	smenu->width = scrnmng.width;
 	smenu->height = scrnmng.height;
 	smenu->bpp = (scrnmng.bpp == 32)?24:scrnmng.bpp;
+	mousemng_showcursor();
 	return(SUCCESS);
 
 smem_err:
@@ -345,6 +347,7 @@ smem_err:
 void scrnmng_leavemenu(void) {
 
 	VRAM_RELEASE(scrnmng.vram);
+	mousemng_hidecursor();
 }
 
 void scrnmng_menudraw(const RECT_T *rct) {
