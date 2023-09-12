@@ -288,6 +288,11 @@ BRESULT fddxdf_write(FDDFILE fdd) {
 	file_close(hdl);
 	fdc.bufcnt = secsize;
 	fddlasterror = 0x00;
+
+#ifdef __EMSCRIPTEN__
+	EM_ASM_({ Module.onFddChange($0); }, fdd->fname);
+#endif
+
 	return(SUCCESS);
 }
 

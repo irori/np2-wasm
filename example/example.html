@@ -6,7 +6,8 @@
     <title>Neko Project II</title>
     <style>
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      textarea.emscripten { font-family: monospace; width: 80%; }
+      .hidden { display: none; }
+      #droparea { height: 50vh; display: flex; justify-content: center; align-items: center; }
       div.emscripten { text-align: center; }
       div.emscripten_border { border: 1px solid black; }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
@@ -16,7 +17,8 @@
   </head>
   <body>
     <div class="emscripten_border">
-      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
+      <div id="droparea">Drag & drop a FDD image here!</div>
+      <canvas class="emscripten hidden" id="canvas" hidden oncontextmenu="event.preventDefault()"></canvas>
     </div>
     <hr/>
     <div class="emscripten">

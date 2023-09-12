@@ -24,7 +24,7 @@ CFLAGS	=	-Wall -O3 -Wstrict-overflow=0 -Wstrict-aliasing=0 -I. -I.. \
 			-I$(NP2_PATH)/vram
 
 CFLAGS	+=	$(SDL_CFLAGS)
-LFLAGS	=	$(MODULARIZE)
+LFLAGS	=	$(MODULARIZE) $(EXPORTS)
 
 TARGET	=	np2.js
 
@@ -59,7 +59,8 @@ CPPSRCS	=	./main.c \
 
 OBJS = $(addsuffix .o,$(basename $(CPPSRCS)))
 LIBS = -lm $(SDL_LFLAGS)
-MODULARIZE = -s MODULARIZE=1 -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=FS,UTF8ToString,stringToUTF8'
+EXPORTS = -s EXPORTED_FUNCTIONS="['_main', '_diskdrv_setfddex', '_diskdrv_setsxsi']"
+MODULARIZE = -s MODULARIZE=1 -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=FS,ccall,UTF8ToString,stringToUTF8'
 
 .SUFFIXES: .c.o
 .SUFFIXES: .cpp.o

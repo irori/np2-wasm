@@ -2,6 +2,7 @@ import createModule, {NP2Module} from "./np2.js"
 
 type NP2Config = {
     canvas: HTMLCanvasElement,
+    onFddChange?: (name: string) => void;
 
     // emulator configurations (src/sdl2/ini.c)
     pc_model?: string,
@@ -99,6 +100,7 @@ export class NP2 {
             },
             getConfig: this.getConfig.bind(this),
             setConfig: this.setConfig.bind(this),
+            onFddChange: this.onFddChange.bind(this),
         } as any;
         createModule(this.module).catch(rejectReady);
     }
@@ -115,6 +117,28 @@ export class NP2 {
             this.running = false;
             this.module.pauseMainLoop();
         }
+    }
+
+    addDiskImage(name: string, bytes: Uint8Array) {
+        this.module.FS.writeFile(name, bytes);
+    }
+
+    getDiskImage(name: string): Uint8Array {
+        return this.module.FS.readFile(name, { encoding: 'binary' });
+    }
+
+    setFdd(drive: number, name: string | null) {
+        if (!name) {
+            // Eject.
+            this.module.ccall('diskdrv_setfddex', null, ['number', 'number', 'number', 'number'], [drive, 0, 0, 0]);
+            return;
+        }
+        try {
+            this.module.FS.stat(name);
+        } catch (err) {
+            throw `${name}: ${err.message}`
+        }
+        this.module.ccall('diskdrv_setfddex', null, ['number', 'string', 'number', 'number'], [drive, name, 0, 0]);
     }
 
     private getConfig(pName:number, type:number, pValue:number, size:number) {
@@ -206,6 +230,12 @@ export class NP2 {
             default:
                 console.warn('setConfig: ' + name + ' has unknown type ' + type);
                 break;
+        }
+    }
+
+    private onFddChange(pName: number) {
+        if (this.config.onFddChange) {
+            this.config.onFddChange(this.module.UTF8ToString(pName));
         }
     }
 }
