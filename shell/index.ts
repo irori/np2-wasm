@@ -85,6 +85,9 @@ export class NP2 {
     private config: NP2Config & { [key: string]: any };
 
     static create(config: NP2Config): Promise<NP2> {
+        config = Object.assign({
+            fontfile: 'font.bmp'
+        }, config);
         return new Promise((resolve, reject) => {
             new NP2(config, resolve, reject);
         });
@@ -92,17 +95,22 @@ export class NP2 {
 
     private constructor(config: NP2Config, resolveReady: (np2: NP2) => void, rejectReady: (reason: any) => void) {
         this.config = config;
-        this.module = {
+        const module = this.module = {
             canvas: this.config.canvas,
+            preRun: [
+                () => {
+                    module.FS.createPreloadedFile('/', config.fontfile, config.fontfile, true, false);
+                },
+            ],
             onReady: () => {
-                this.module.pauseMainLoop();
+                module.pauseMainLoop();
                 resolveReady(this);
             },
             getConfig: this.getConfig.bind(this),
             setConfig: this.setConfig.bind(this),
             onFddChange: this.onFddChange.bind(this),
         } as any;
-        createModule(this.module).catch(rejectReady);
+        createModule(module).catch(rejectReady);
     }
 
     run() {
