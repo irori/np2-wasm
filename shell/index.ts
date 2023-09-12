@@ -79,34 +79,41 @@ const enum IniType { // src/sdl2/ini.h
 };
 
 export class NP2 {
+    private running = false;
     private module: NP2Module;
-    private moduleReady: Promise<NP2Module>;
     private config: NP2Config & { [key: string]: any };
-    private preRunCalled = false;
-    private runCalled = false;
 
-    constructor(config: NP2Config) {
+    static create(config: NP2Config): Promise<NP2> {
+        return new Promise((resolve, reject) => {
+            new NP2(config, resolve, reject);
+        });
+    }
+
+    private constructor(config: NP2Config, resolveReady: (np2: NP2) => void, rejectReady: (reason: any) => void) {
         this.config = config;
         this.module = {
             canvas: this.config.canvas,
-            preRun: [this.preRun.bind(this)],
+            onReady: () => {
+                this.module.pauseMainLoop();
+                resolveReady(this);
+            },
             getConfig: this.getConfig.bind(this),
             setConfig: this.setConfig.bind(this),
         } as any;
-        this.moduleReady = createModule(this.module);
+        createModule(this.module).catch(rejectReady);
     }
 
-    private preRun() {
-        this.preRunCalled = true;
-        if (!this.runCalled) {
-            this.module.addRunDependency('NP2.run');
+    run() {
+        if (!this.running) {
+            this.running = true;
+            this.module.resumeMainLoop();
         }
     }
 
-    async run() {
-        this.runCalled = true;
-        if (this.preRunCalled) {
-            this.module.removeRunDependency('NP2.run');
+    pause() {
+        if (this.running) {
+            this.running = false;
+            this.module.pauseMainLoop();
         }
     }
 
