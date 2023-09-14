@@ -3,6 +3,7 @@
  * @brief	メイン
  */
 
+#include <stdio.h>
 #include "compiler.h"
 #include "../np2.h"
 
@@ -15,4 +16,8 @@
 int main(int argc, char * argv[])
 {
 	return np2_main(argc, argv);
+}
+
+void msgbox(const char *title, const char *msg) {
+	fprintf(stderr, "%s: %s\n", title, msg);
 }

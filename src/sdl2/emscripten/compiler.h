@@ -9,6 +9,7 @@
 
 #include <stdio.h>
 #include <stddef.h>
+#include <setjmp.h>
 #include <SDL.h>
 
 #define	BYTESEX_LITTLE
@@ -24,6 +25,8 @@ typedef	signed short		SINT16;
 typedef	unsigned short		UINT16;
 typedef	signed int			SINT32;
 typedef	unsigned int		UINT32;
+typedef int64_t				SINT64;
+typedef uint64_t			UINT64;
 
 #define	BRESULT				UINT
 #define	OEMCHAR				char
@@ -72,6 +75,16 @@ typedef	unsigned char	BOOL;
 #define	FillMemory(a, b, c)	memset((a), (c), (b))
 #endif
 
+#if defined(CPUCORE_IA32)
+#define SUPPORT_PC9821
+#define SUPPORT_CRT31KHZ
+#else
+#define	SUPPORT_CRT15KHZ
+#endif
+
+#define IOOUTCALL
+#define IOINPCALL
+
 #include "common.h"
 #include "milstr.h"
 #include "_memory.h"
@@ -97,7 +110,6 @@ typedef	unsigned char	BOOL;
 #define SOUND_CRITICAL
 #define	SOUNDRESERVE	100
 
-#define	SUPPORT_CRT15KHZ
 // #define	SUPPORT_HOSTDRV
 // #define	SUPPORT_SWSEEKSND
 #define	SUPPORT_SASI
@@ -107,3 +119,5 @@ typedef	unsigned char	BOOL;
 // #define SUPPORT_ZLIB
 
 #define	SCREEN_BPP		16
+
+void msgbox(const char *title, const char *msg);

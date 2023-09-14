@@ -17,7 +17,6 @@ CFLAGS	=	-Wall -O3 -Wstrict-overflow=0 -Wstrict-aliasing=0 -I. -I.. \
 			-I$(NP2_PATH)/embed/menu \
 			-I$(NP2_PATH)/embed/menubase \
 			-I$(NP2_PATH)/generic \
-			-I$(NP2_PATH)/i286c \
 			-I$(NP2_PATH)/io \
 			-I$(NP2_PATH)/mem \
 			-I$(NP2_PATH)/sound \
@@ -25,8 +24,6 @@ CFLAGS	=	-Wall -O3 -Wstrict-overflow=0 -Wstrict-aliasing=0 -I. -I.. \
 
 CFLAGS	+=	$(SDL_CFLAGS)
 LFLAGS	=	$(MODULARIZE) $(EXPORTS)
-
-TARGET	=	np2.js
 
 CPPSRCS	=	./main.c \
 			$(NP2_PATH)/calendar.c \
@@ -46,7 +43,6 @@ CPPSRCS	=	./main.c \
 			$(wildcard $(NP2_PATH)/fdd/*.c) \
 			$(wildcard $(NP2_PATH)/font/*.c) \
 			$(wildcard $(NP2_PATH)/generic/*.c) \
-			$(wildcard $(NP2_PATH)/i286c/*.c) \
 			$(wildcard $(NP2_PATH)/io/*.c) \
 			$(wildcard $(NP2_PATH)/lio/*.c) \
 			$(wildcard $(NP2_PATH)/mem/*.c) \
@@ -57,6 +53,19 @@ CPPSRCS	=	./main.c \
 			$(wildcard $(NP2_PATH)/sound/vermouth/*.c) \
 			$(wildcard $(NP2_PATH)/vram/*.c)
 
+ifdef IA32
+TARGET	=	np21
+CFLAGS	+=	-I$(NP2_PATH)/i386c -DCPUCORE_IA32
+CPPSRCS +=	$(wildcard $(NP2_PATH)/i386c/*.c) \
+			$(wildcard $(NP2_PATH)/i386c/ia32/*.c) \
+			$(wildcard $(NP2_PATH)/i386c/ia32/instructions/*.c) \
+			$(NP2_PATH)/i386c/ia32/instructions/fpu/fpdummy.c
+else
+TARGET	=	np2
+CFLAGS	+=	-I$(NP2_PATH)/i286c
+CPPSRCS +=	$(wildcard $(NP2_PATH)/i286c/*.c)
+endif
+
 OBJS = $(addsuffix .o,$(basename $(CPPSRCS)))
 LIBS = -lm $(SDL_LFLAGS)
 EXPORTS = -s EXPORTED_FUNCTIONS="['_main', '_diskdrv_setfddex', '_diskdrv_setsxsi']"
@@ -65,9 +74,9 @@ MODULARIZE = -s MODULARIZE=1 -s EXPORT_ES6=1 -s 'EXPORTED_RUNTIME_METHODS=FS,cca
 .SUFFIXES: .c.o
 .SUFFIXES: .cpp.o
 
-all:	$(TARGET)
+all:	$(TARGET).js
 
-$(TARGET): $(OBJS)
+$(TARGET).js: $(OBJS)
 	$(CC) $(LFLAGS) $(LIBS) -g -o $@ $(OBJS)
 
 .c.o:
@@ -77,4 +86,4 @@ $(TARGET): $(OBJS)
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 clean:
-	rm -f $(TARGET) $(OBJS)
+	rm -f $(OBJS)
