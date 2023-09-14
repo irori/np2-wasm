@@ -2,7 +2,7 @@ import createModule, {NP2Module} from "./np2.js"
 
 type NP2Config = {
     canvas: HTMLCanvasElement,
-    onFddChange?: (name: string) => void;
+    onDiskChange?: (name: string) => void;
 
     // emulator configurations (src/sdl2/ini.c)
     pc_model?: string,
@@ -80,7 +80,7 @@ const enum IniType { // src/sdl2/ini.h
 };
 
 export class NP2 {
-    private running = false;
+    private state: 'loading' | 'ready' | 'running' | 'paused' = 'loading';
     private module: NP2Module;
     private config: NP2Config & { [key: string]: any };
 
@@ -104,27 +104,32 @@ export class NP2 {
             ],
             onReady: () => {
                 module.pauseMainLoop();
+                this.state = 'ready';
                 resolveReady(this);
             },
             getConfig: this.getConfig.bind(this),
             setConfig: this.setConfig.bind(this),
-            onFddChange: this.onFddChange.bind(this),
+            onDiskChange: this.onDiskChange.bind(this),
         } as any;
         createModule(module).catch(rejectReady);
     }
 
     run() {
-        if (!this.running) {
-            this.running = true;
+        if (this.state === 'ready' || this.state === 'paused') {
+            this.state = 'running';
             this.module.resumeMainLoop();
         }
     }
 
     pause() {
-        if (this.running) {
-            this.running = false;
+        if (this.state === 'running') {
+            this.state = 'paused';
             this.module.pauseMainLoop();
         }
+    }
+
+    reset() {
+        this.module.ccall('np2_reset', null, [], []);
     }
 
     addDiskImage(name: string, bytes: Uint8Array) {
@@ -147,6 +152,25 @@ export class NP2 {
             throw `${name}: ${err.message}`
         }
         this.module.ccall('diskdrv_setfddex', null, ['number', 'string', 'number', 'number'], [drive, name, 0, 0]);
+    }
+
+    setHdd(drive: number, name: string | null) {
+        if (!name) {
+            // Disconnect.
+            this.module.ccall('diskdrv_setsxsi', null, ['number', 'number'], [drive, 0]);
+        } else {
+            try {
+                this.module.FS.stat(name);
+            } catch (err) {
+                throw `${name}: ${err.message}`
+            }
+            this.module.ccall('diskdrv_setsxsi', null, ['number', 'string'], [drive, name]);
+        }
+        if (this.state === 'ready') {
+            this.reset();
+        } else {
+            console.log('setHdd() called after boot. It will not take effect until reset.')
+        }
     }
 
     private getConfig(pName:number, type:number, pValue:number, size:number) {
@@ -241,9 +265,9 @@ export class NP2 {
         }
     }
 
-    private onFddChange(pName: number) {
-        if (this.config.onFddChange) {
-            this.config.onFddChange(this.module.UTF8ToString(pName));
+    private onDiskChange(pName: number) {
+        if (this.config.onDiskChange) {
+            this.config.onDiskChange(this.module.UTF8ToString(pName));
         }
     }
 }

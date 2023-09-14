@@ -62,7 +62,7 @@ static BRESULT d88trk_flushdata(D88TRK trk) {
 	trk->write = FALSE;
 
 #ifdef __EMSCRIPTEN__
-	EM_ASM_({ Module.onFddChange($0); }, fdd->fname);
+	EM_ASM_({ Module.onDiskChange($0); }, fdd->fname);
 #endif
 
 dtfd_exit:

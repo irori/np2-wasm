@@ -92,6 +92,11 @@ static REG8 hdd_write(SXSIDEV sxsi, long pos, const UINT8 *buf, UINT size) {
 		buf += wsize;
 		size -= wsize;
 	}
+
+#ifdef __EMSCRIPTEN__
+	EM_ASM_({ Module.onDiskChange($0); }, sxsi->fname);
+#endif
+
 	return(0x00);
 }
 

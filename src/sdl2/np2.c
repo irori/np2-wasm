@@ -288,3 +288,12 @@ np2main_err1:
 	return(FAILURE);
 }
 
+#ifdef __EMSCRIPTEN__
+
+EMSCRIPTEN_KEEPALIVE
+void np2_reset(void) {
+	pccore_cfgupdate();
+	pccore_reset();
+}
+
+#endif
