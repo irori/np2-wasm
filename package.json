@@ -1,10 +1,18 @@
 {
-  "name": "np2",
+  "name": "np2-wasm",
   "version": "0.0.0",
-  "description": "",
-  "main": "example/index.js",
+  "description": "PC-9801 emulator for the Web.",
+  "keywords": [
+    "emulator",
+    "pc-9801",
+    "pc-9821"
+  ],
+  "type": "module",
+  "main": "dist/np2-wasm.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build-wasm": "./build-wasm.sh",
+    "build-shell": "cd shell && tsc",
+    "build-font": "cd font && node makefont.js"
   },
   "repository": {
     "type": "git",

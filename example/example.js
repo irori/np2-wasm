@@ -1,23 +1,23 @@
-import {NP2, NP21} from "./index.js";
+import {NP2, NP21} from "../dist/np2-wasm.js";
 
-const canvas = document.getElementById('canvas')!;
-const droparea = document.getElementById('droparea')!;
+const canvas = document.getElementById('canvas');
+const droparea = document.getElementById('droparea');
 
 droparea.addEventListener('dragover', (e) => {
     e.stopPropagation();
     e.preventDefault();
-    e.dataTransfer!.dropEffect = 'copy';
+    e.dataTransfer.dropEffect = 'copy';
 });
 
 droparea.addEventListener('drop', async (e) => {
     e.stopPropagation();
     e.preventDefault();
-    droparea.parentElement!.removeChild(droparea);
+    droparea.parentElement.removeChild(droparea);
     canvas.classList.remove('hidden');
 
-    const files = e.dataTransfer!.files;
+    const files = e.dataTransfer.files;
     let np2 = await NP21.create({
-        canvas: document.getElementById('canvas') as HTMLCanvasElement,
+        canvas: document.getElementById('canvas'),
         clk_mult: 8,
         Latencys: 120,
         onDiskChange: (name) => console.log(name + ' changed'),

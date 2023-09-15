@@ -2,9 +2,10 @@
     "compilerOptions": {
         "module": "es2022",
         "target": "es2020",
-        "outDir": "../example",
+        "outDir": "../dist",
         "newLine": "LF",
         "noImplicitAny": true,
+        "declaration": true,
         "sourceMap": false
     }
 }

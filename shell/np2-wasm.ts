@@ -103,7 +103,8 @@ export class NP2 {
             canvas: this.config.canvas,
             preRun: [
                 () => {
-                    module.FS.createPreloadedFile('/', config.fontfile, config.fontfile, true, false);
+                    const url = new URL(config.fontfile, import.meta.url).href;
+                    module.FS.createPreloadedFile('/', config.fontfile, url, true, false);
                 },
             ],
             onReady: () => {

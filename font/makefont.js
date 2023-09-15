@@ -225,4 +225,4 @@ function makepc98bmp(fname) {
     bmp.writeToFile(fname);
 }
 
-makepc98bmp('../example/font.bmp')
+makepc98bmp('../dist/font.bmp')
