@@ -1,4 +1,5 @@
-import createModule, {NP2Module} from "./np2.js"
+import createNp2Module, {NP2Module} from "./np2.js";
+import createNp21Module from "./np21.js";
 
 type NP2Config = {
     canvas: HTMLCanvasElement,
@@ -79,21 +80,24 @@ const enum IniType { // src/sdl2/ini.h
     USER
 };
 
+function applyDefaultConfig(config: NP2Config): NP2Config {
+    return Object.assign({
+        fontfile: 'font.bmp'
+    }, config);
+}
+
 export class NP2 {
     private state: 'loading' | 'ready' | 'running' | 'paused' = 'loading';
     private module: NP2Module;
     private config: NP2Config & { [key: string]: any };
 
     static create(config: NP2Config): Promise<NP2> {
-        config = Object.assign({
-            fontfile: 'font.bmp'
-        }, config);
         return new Promise((resolve, reject) => {
-            new NP2(config, resolve, reject);
+            new NP2(applyDefaultConfig(config), createNp2Module, resolve, reject);
         });
     }
 
-    private constructor(config: NP2Config, resolveReady: (np2: NP2) => void, rejectReady: (reason: any) => void) {
+    protected constructor(config: NP2Config, createModule: typeof createNp2Module, resolveReady: (np2: NP2) => void, rejectReady: (reason: any) => void) {
         this.config = config;
         const module = this.module = {
             canvas: this.config.canvas,
@@ -269,5 +273,13 @@ export class NP2 {
         if (this.config.onDiskChange) {
             this.config.onDiskChange(this.module.UTF8ToString(pName));
         }
+    }
+}
+
+export class NP21 extends NP2 {
+    static create(config: NP2Config): Promise<NP21> {
+        return new Promise((resolve, reject) => {
+            new NP21(applyDefaultConfig(config), createNp21Module, resolve, reject);
+        });
     }
 }

@@ -1,4 +1,4 @@
-import {NP2} from "./index.js";
+import {NP2, NP21} from "./index.js";
 
 const canvas = document.getElementById('canvas')!;
 const droparea = document.getElementById('droparea')!;
@@ -16,7 +16,7 @@ droparea.addEventListener('drop', async (e) => {
     canvas.classList.remove('hidden');
 
     const files = e.dataTransfer!.files;
-    let np2 = await NP2.create({
+    let np2 = await NP21.create({
         canvas: document.getElementById('canvas') as HTMLCanvasElement,
         clk_mult: 8,
         Latencys: 120,
