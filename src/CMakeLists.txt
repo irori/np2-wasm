@@ -50,7 +50,6 @@ target_link_options(np2_dependencies INTERFACE
   ${EM_LIBS}
   "SHELL:-s MODULARIZE=1"
   "SHELL:-s EXPORT_ES6=1"
-  "SHELL:-s EXPORTED_FUNCTIONS=_main,_diskdrv_setfddex,_diskdrv_setsxsi"
   "SHELL:-s EXPORTED_RUNTIME_METHODS=FS,ccall,UTF8ToString,stringToUTF8"
 )
 

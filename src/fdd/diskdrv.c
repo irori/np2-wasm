@@ -24,6 +24,7 @@ static int diskdrv_ro[4];					/*!< readonly */
  * @param[in] drv The ID of the drive
  * @param[in] fname The filename
  */
+EMSCRIPTEN_KEEPALIVE
 void diskdrv_setsxsi(REG8 drv, const OEMCHAR *fname)
 {
 	UINT	num;
@@ -168,6 +169,7 @@ void diskdrv_readyfddex(REG8 drv, const OEMCHAR *fname, UINT ftype, int readonly
  * @param[in] ftype the type of the disk
  * @param[in] readonly The flags of file
  */
+EMSCRIPTEN_KEEPALIVE
 void diskdrv_setfddex(REG8 drv, const OEMCHAR *fname, UINT ftype, int readonly)
 {
 	if ((drv < 4) && (fdc.equip & (1 << drv)))

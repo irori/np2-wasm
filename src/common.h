@@ -144,3 +144,6 @@ enum {
 #define	FASTCALL
 #endif
 
+#ifndef __EMSCRIPTEN__
+#define EMSCRIPTEN_KEEPALIVE
+#endif
