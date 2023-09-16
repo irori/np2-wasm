@@ -97,7 +97,12 @@ export class NP2 {
         });
     }
 
-    protected constructor(config: NP2Config, createModule: typeof createNp2Module, resolveReady: (np2: NP2) => void, rejectReady: (reason: any) => void) {
+    protected constructor(
+        config: NP2Config,
+        createModule: (moduleArg: any) => Promise<any>,
+        resolveReady: (np2: NP2) => void,
+        rejectReady: (reason: any) => void)
+    {
         this.config = config;
         const module = this.module = {
             canvas: this.config.canvas,

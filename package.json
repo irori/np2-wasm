@@ -8,7 +8,8 @@
     "pc-9821"
   ],
   "type": "module",
-  "main": "dist/np2-wasm.js",
+  "main": "./dist/np2-wasm.js",
+  "types": "./dist/np2-wasm.d.ts",
   "scripts": {
     "build-wasm": "./build-wasm.sh",
     "build-shell": "cd shell && tsc",
