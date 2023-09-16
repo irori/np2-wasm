@@ -13,7 +13,7 @@
   "scripts": {
     "build-wasm": "./build-wasm.sh",
     "build-shell": "cd shell && tsc",
-    "build-font": "cd font && node makefont.js"
+    "build-font": "cd font && node makefont.cjs"
   },
   "repository": {
     "type": "git",
