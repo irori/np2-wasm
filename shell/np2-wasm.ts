@@ -103,7 +103,7 @@ export class NP2 {
             canvas: this.config.canvas,
             preRun: [
                 () => {
-                    const url = new URL(config.fontfile, import.meta.url).href;
+                    const url = new URL(config.fontfile!, import.meta.url).href;
                     module.FS.createPreloadedFile('/', config.fontfile, url, true, false);
                 },
             ],
@@ -154,7 +154,7 @@ export class NP2 {
         try {
             this.module.FS.stat(name);
         } catch (err) {
-            throw `${name}: ${err.message}`
+            throw new Error(`${name}: Invalid disk image name`)
         }
         this.module.ccall('diskdrv_setfddex', null, ['number', 'string', 'number', 'number'], [drive, name, 0, 0]);
     }
@@ -167,7 +167,7 @@ export class NP2 {
             try {
                 this.module.FS.stat(name);
             } catch (err) {
-                throw `${name}: ${err.message}`
+                throw new Error(`${name}: Invalid disk image name`)
             }
             this.module.ccall('diskdrv_setsxsi', null, ['number', 'string'], [drive, name]);
         }

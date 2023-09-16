@@ -4,7 +4,7 @@
         "target": "es2020",
         "outDir": "../dist",
         "newLine": "LF",
-        "noImplicitAny": true,
+        "strict": true,
         "declaration": true,
         "sourceMap": false
     }
