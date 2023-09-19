@@ -3,11 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Neko Project II</title>
+    <title>NP2-wasm demo</title>
     <style>
       .emscripten { padding-right: 0; margin-left: auto; margin-right: auto; display: block; }
-      .hidden { display: none; }
-      #droparea { height: 50vh; display: flex; justify-content: center; align-items: center; }
       div.emscripten { text-align: center; }
       div.emscripten_border { border: 1px solid black; }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
@@ -16,9 +14,8 @@
     </style>
   </head>
   <body>
-    <div class="emscripten_border">
-      <div id="droparea">Drag & drop a FDD image here!</div>
-      <canvas class="emscripten hidden" id="canvas" hidden oncontextmenu="event.preventDefault()"></canvas>
+    <div class="emscripten_border" id="droparea">
+      <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()"></canvas>
     </div>
     <hr/>
     <div class="emscripten">
@@ -30,6 +27,16 @@
       &nbsp;&nbsp;&nbsp;
       <input type="button" value="Fullscreen" onclick="Module.requestFullScreen(document.getElementById('pointerLock').checked,
                                                                                 document.getElementById('resize').checked)">
+    </div>
+    <div>
+      FDD1:
+      <select id="fdd1">
+      <option value="">(ejected)</option>
+      </select>
+      FDD2:
+      <select id="fdd2">
+      <option value="">(ejected)</option>
+      </select>
     </div>
     <script type="module" src="example.js"></script>
   </body>
