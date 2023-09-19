@@ -188,8 +188,9 @@ int np2_main(int argc, char *argv[]) {
 	}
 
 #ifdef __EMSCRIPTEN__
+	emscripten_set_main_loop(main_loop, 0, 0);
 	EM_ASM(Module.onReady());
-	emscripten_set_main_loop(main_loop, 0, 1);
+	return 0;
 #else
 	while(taskmng_isavail()) {
 		taskmng_rol();
