@@ -2,6 +2,10 @@
 
 This is a PC-9801 / PC-9821 emulator based on [Neko Project II](http://www.yui.ne.jp/np2/) that runs in a web browser.
 
+## Demo
+
+https://irori.github.io/np2-wasm/
+
 ## How to Use
 
 example.html:

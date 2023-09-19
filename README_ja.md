@@ -2,6 +2,10 @@
 
 Webブラウザで動く[Neko Project II](http://www.yui.ne.jp/np2/)ベースのPC-9801 / PC-9821エミュレータです。
 
+## デモ
+
+https://irori.github.io/np2-wasm/
+
 ## 使用法
 
 example.html:
