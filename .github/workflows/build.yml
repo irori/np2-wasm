@@ -35,9 +35,32 @@ jobs:
         npm install
         npm run build
         npm pack
+        cp example/index.html dist/
+        sed 's/\.\.\/dist\//.\//' example/example.js > dist/example.js
 
-    - name: Upload artifacts
+    - name: Upload package tarball
       uses: actions/upload-artifact@v3
       with:
-        name: tarball
+        name: package-tarball
         path: np2-wasm-*.tgz
+
+    - name: Upload artifacts for GitHub Pages
+      uses: actions/upload-pages-artifact@v2
+      if: ${{ github.ref == 'refs/heads/main' }}
+      with:
+        path: dist
+
+  deploy:
+    needs: build
+    if: ${{ github.ref == 'refs/heads/main' }}
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    permissions:
+      pages: write
+      id-token: write
+    steps:
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v2
+        id: deployment
