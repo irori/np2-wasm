@@ -48,6 +48,7 @@ set(EM_LIBS "SHELL:-s USE_SDL=2")
 target_compile_options(np2_dependencies INTERFACE ${EM_LIBS})
 target_link_options(np2_dependencies INTERFACE
   ${EM_LIBS}
+  "SHELL:-s ENVIRONMENT=web"
   "SHELL:-s MODULARIZE=1"
   "SHELL:-s EXPORT_ES6=1"
   "SHELL:-s EXPORTED_RUNTIME_METHODS=FS,ccall,UTF8ToString,stringToUTF8"
