@@ -87,9 +87,11 @@ function applyDefaultConfig(config: NP2Config): NP2Config {
 }
 
 export class NP2 {
-    private state: 'loading' | 'ready' | 'running' | 'paused' = 'loading';
+    #state: 'loading' | 'ready' | 'running' | 'paused' = 'loading';
     private module: NP2Module;
     private config: NP2Config & { [key: string]: any };
+
+    get state() { return this.#state; }
 
     static create(config: NP2Config): Promise<NP2> {
         return new Promise((resolve, reject) => {
@@ -114,7 +116,7 @@ export class NP2 {
             ],
             onReady: () => {
                 module.pauseMainLoop();
-                this.state = 'ready';
+                this.#state = 'ready';
                 resolveReady(this);
             },
             getConfig: this.getConfig.bind(this),
@@ -125,15 +127,15 @@ export class NP2 {
     }
 
     run() {
-        if (this.state === 'ready' || this.state === 'paused') {
-            this.state = 'running';
+        if (this.#state === 'ready' || this.#state === 'paused') {
+            this.#state = 'running';
             this.module.resumeMainLoop();
         }
     }
 
     pause() {
-        if (this.state === 'running') {
-            this.state = 'paused';
+        if (this.#state === 'running') {
+            this.#state = 'paused';
             this.module.pauseMainLoop();
         }
     }
@@ -176,7 +178,7 @@ export class NP2 {
             }
             this.module.ccall('diskdrv_setsxsi', null, ['number', 'string'], [drive, name]);
         }
-        if (this.state === 'ready') {
+        if (this.#state === 'ready') {
             this.reset();
         } else {
             console.log('setHdd() called after boot. It will not take effect until reset.')

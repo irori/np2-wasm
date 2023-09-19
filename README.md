@@ -62,6 +62,9 @@ A smaller value will shorten the delay of the sound, but it will require more CP
 ### NP21.create(config: NP2Config): Promise\<NP21>
 Same as `NP2.create()`, but this will create an instance of the PC-9821 emulator `NP21`.
 
+### state: 'ready' | 'running' | 'paused'
+Returns the current state of the emulator.
+
 ### run(): void
 Starts the emulator.
 
