@@ -58,9 +58,6 @@ add_executable(np2)
 target_link_libraries(np2 PRIVATE np2_dependencies)
 install(TARGETS np2 RUNTIME DESTINATION bin)
 
-find_package(ZLIB REQUIRED)
-target_link_libraries(np2_dependencies INTERFACE ZLIB::ZLIB)
-
 target_include_directories(np2_dependencies INTERFACE
   sdl2
   sdl2/emscripten

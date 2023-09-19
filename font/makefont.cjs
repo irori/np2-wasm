@@ -2,7 +2,7 @@
 // The conversion logic is mostly taken from src/font/fontmake.c.
 
 let fs = require('fs');
-let BDF = require('BDF');
+let BDF = require('bdf');
 
 class FontBitmap {
     constructor() {

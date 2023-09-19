@@ -1,4 +1,6 @@
 .editorconfig
+.github
+emsdk-cache
 build-wasm.sh
 example
 font

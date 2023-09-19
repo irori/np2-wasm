@@ -11,6 +11,7 @@
   "main": "./dist/np2-wasm.js",
   "types": "./dist/np2-wasm.d.ts",
   "scripts": {
+    "build": "npm run build-wasm && npm run build-shell && npm run build-font",
     "build-wasm": "./build-wasm.sh",
     "build-shell": "cd shell && tsc",
     "build-font": "cd font && node makefont.cjs"
