@@ -62,7 +62,7 @@ droparea.addEventListener('drop', async (e) => {
     const files = e.dataTransfer.files;
     let readyToRun = false;
     for (const file of files) {
-        if (file.name.match(/\.(d88|88d|d98|98d|fdi|xdf|hdm|dup|2hd|tfd)$/i)) {
+        if (file.name.match(/\.(d88|88d|d98|98d|fdi|xdf|hdm|dup|2hd|tfd|img)$/i)) {
             await create_np2();
             await addImage(file, true);
             readyToRun = true;
