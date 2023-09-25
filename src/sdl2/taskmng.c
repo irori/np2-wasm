@@ -99,7 +99,7 @@ void taskmng_rol(void) {
 			break;
 
 		case SDL_KEYDOWN:
-			if (e.key.keysym.sym == SDLK_F11) {
+			if (e.key.keysym.scancode == SDL_SCANCODE_F11) {
 				if (menuvram == NULL) {
 					sysmenu_menuopen(0, 0, 0);
 				}
@@ -108,12 +108,12 @@ void taskmng_rol(void) {
 				}
 			}
 			else {
-				sdlkbd_keydown(e.key.keysym.sym);
+				sdlkbd_keydown(e.key.keysym.scancode);
 			}
 			break;
 
 		case SDL_KEYUP:
-			sdlkbd_keyup(e.key.keysym.sym);
+			sdlkbd_keyup(e.key.keysym.scancode);
 			break;
 
 		case SDL_QUIT:
