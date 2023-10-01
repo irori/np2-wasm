@@ -130,14 +130,14 @@ export class NP2 {
     run() {
         if (this.#state === 'ready' || this.#state === 'paused') {
             this.#state = 'running';
-            this.module.resumeMainLoop();
+            this.module._np2_resume();
         }
     }
 
     pause() {
         if (this.#state === 'running') {
             this.#state = 'paused';
-            this.module.pauseMainLoop();
+            this.module._np2_pause();
         }
     }
 

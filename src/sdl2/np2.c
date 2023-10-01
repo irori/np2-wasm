@@ -297,4 +297,15 @@ void np2_reset(void) {
 	pccore_reset();
 }
 
+EMSCRIPTEN_KEEPALIVE
+void np2_pause(void) {
+	soundmng_stop();
+	emscripten_pause_main_loop();
+}
+
+EMSCRIPTEN_KEEPALIVE
+void np2_resume(void) {
+	soundmng_play();
+	emscripten_resume_main_loop();
+}
 #endif
