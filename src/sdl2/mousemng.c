@@ -17,10 +17,20 @@ typedef struct {
 
 static	MOUSEMNG	mousemng;
 
+static EM_BOOL on_pointerlockchange(int eventType, const EmscriptenPointerlockChangeEvent *e, void *userData) {
+	if (!e->isActive)
+		mousemng_showcursor();
+	return EM_TRUE;
+}
+
 void mousemng_initialize(void) {
 	ZeroMemory(&mousemng, sizeof(mousemng));
 	mousemng.btn = uPD8255A_LEFTBIT | uPD8255A_RIGHTBIT;
-#ifndef __EMSCRIPTEN__
+
+#ifdef __EMSCRIPTEN__
+	// This must be called after SDL_CreateRenderer()
+	emscripten_set_pointerlockchange_callback(EMSCRIPTEN_EVENT_TARGET_DOCUMENT, NULL, 0, on_pointerlockchange);
+#else
 	mousemng.showcount = 1;
 #endif
 }

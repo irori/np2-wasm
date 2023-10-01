@@ -160,12 +160,12 @@ int np2_main(int argc, char *argv[]) {
 		goto np2main_err3;
 	}
 
-	mousemng_initialize();
 
 	scrnmng_initialize();
 	if (scrnmng_create(FULLSCREEN_WIDTH, FULLSCREEN_HEIGHT) != SUCCESS) {
 		goto np2main_err4;
 	}
+	mousemng_initialize();
 
 	soundmng_initialize();
 	commng_initialize();
