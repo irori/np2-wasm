@@ -53,15 +53,18 @@ np2.run();
 ディスクイメージに書き込みが行われたときに呼ばれるコールバックです。
 変更されたイメージは `getDiskImage()` メソッドで取得できます。
 
-#### clk_base: number (optional, default=2457600)
+#### clk_base: number (default=2457600)
 CPU スピードのベースクロック (Hz) を指定します。1996800 か 2457600 が指定できます。
 
-#### clk_mult: number (optional, default=4)
+#### clk_mult: number (default=4)
 CPU スピードの倍率を決めます。実際の CPU スピードはこの値にベースクロックを掛けた物になります。
 
-#### Latencys: number (optional, default=250)
+#### Latencys: number (default=250)
 サウンドエミュレートの出力バッファサイズをミリ秒で指定します。20〜1000ms の間を指定してください。
 値が少ないほどサウンドの延滞が短くなりますが、CPU パワーが必要になります。
+
+#### use_menu: boolean (default=true)
+マウスの中クリックかF11キーでNeko Project IIのメニューを表示します。
 
 ### NP21.create(config: NP2Config): Promise\<NP21>
 `NP2.create()` と同じですが、PC-9821エミュレータ `NP21` のインスタンスを作成します。

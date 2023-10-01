@@ -25,7 +25,7 @@
 #include	"sysmenu.h"
 
 
-		NP2OSCFG	np2oscfg = {0, 0, 0, 0, 0};
+NP2OSCFG	np2oscfg = { .enable_menu = TRUE };
 
 static void usage(const char *progname) {
 

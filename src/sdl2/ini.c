@@ -385,6 +385,7 @@ static const INITBL iniitem[] = {
 	{"F12_bind", INITYPE_UINT8,		&np2oscfg.F12KEY,		0},
 	{"e_resume", INITYPE_BOOL,		&np2oscfg.resume,		0},
 	{"jast_snd", INITYPE_BOOL,		&np2oscfg.jastsnd,		0},		// ver0.73
+	{"use_menu", INITYPE_BOOL,		&np2oscfg.enable_menu,	0},
 };
 
 #define	INIITEMS	(sizeof(iniitem) / sizeof(INITBL))

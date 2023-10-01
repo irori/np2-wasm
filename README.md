@@ -53,15 +53,18 @@ The `<canvas>` element that displays the screen of the emulator.
 A callback function that is called when a write operation is performed to the disk image.
 The modified image can be retrieved with the `getDiskImage()` method.
 
-#### clk_base: number (optional, default=2457600)
+#### clk_base: number (default=2457600)
 Specifies the base clock (Hz) of the CPU. Either 1996800 or 2457600 can be specified.
 
-#### clk_mult: number (optional, default=4)
+#### clk_mult: number (default=4)
 Specifies the multiplication factor for the CPU. The actual CPU speed will be the product of this value and the base clock.
 
-#### Latencys: number (optional, default=250)
+#### Latencys: number (default=250)
 Specifies the output buffer size for the sound emulator in milliseconds. Please specify a number between 20 and 1000 ms.
 A smaller value will shorten the delay of the sound, but it will require more CPU power.
+
+#### use_menu: boolean (default=true)
+Show the Neko Project II menu on middle-click or F11.
 
 ### NP21.create(config: NP2Config): Promise\<NP21>
 Same as `NP2.create()`, but this will create an instance of the PC-9821 emulator `NP21`.

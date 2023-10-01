@@ -5,6 +5,7 @@ typedef struct {
 	UINT8	F12KEY;
 	UINT8	resume;
 	UINT8	jastsnd;
+	UINT8	enable_menu;
 } NP2OSCFG;
 
 

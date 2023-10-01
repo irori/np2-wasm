@@ -4,6 +4,7 @@
 #include	"taskmng.h"
 #include	"sdlkbd.h"
 #include "sysmenu.h"
+#include "np2.h"
 #include "embed/menubase/menubase.h"
 
 
@@ -74,10 +75,12 @@ void taskmng_rol(void) {
 					break;
 
 				case SDL_BUTTON_MIDDLE:
-					if (menuvram == NULL)
-						sysmenu_menuopen(0, e.button.x, e.button.y);
-					else
-						menubase_close();
+					if (np2oscfg.enable_menu) {
+						if (menuvram == NULL)
+							sysmenu_menuopen(0, e.button.x, e.button.y);
+						else
+							menubase_close();
+					}
 					break;
 			}
 			break;
@@ -99,7 +102,7 @@ void taskmng_rol(void) {
 			break;
 
 		case SDL_KEYDOWN:
-			if (e.key.keysym.scancode == SDL_SCANCODE_F11) {
+			if (np2oscfg.enable_menu && e.key.keysym.scancode == SDL_SCANCODE_F11) {
 				if (menuvram == NULL) {
 					sysmenu_menuopen(0, 0, 0);
 				}

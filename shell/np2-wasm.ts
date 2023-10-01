@@ -62,6 +62,7 @@ type NP2Config = {
     F12_bind?: number,
     e_resume?: boolean,
     jast_snd?: boolean,
+    use_menu?: boolean,
 }
 
 const enum IniType { // src/sdl2/ini.h
