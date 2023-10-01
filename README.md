@@ -75,9 +75,6 @@ Returns the current state of the emulator.
 ### run(): void
 Starts the emulator.
 
-### pause(): void
-Pauses the emulator.
-
 ### reset(): void
 Resets the emulator.
 

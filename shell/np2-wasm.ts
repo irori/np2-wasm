@@ -117,6 +117,7 @@ export class NP2 {
             ],
             onReady: () => {
                 module.pauseMainLoop();
+                document.addEventListener('visibilitychange', this.onVisibilityChange.bind(this));
                 this.#state = 'ready';
                 resolveReady(this);
             },
@@ -134,7 +135,7 @@ export class NP2 {
         }
     }
 
-    pause() {
+    private pause() {
         if (this.#state === 'running') {
             this.#state = 'paused';
             this.module._np2_pause();
@@ -281,6 +282,16 @@ export class NP2 {
     private onDiskChange(pName: number) {
         if (this.config.onDiskChange) {
             this.config.onDiskChange(this.module.UTF8ToString(pName));
+        }
+    }
+
+    private onVisibilityChange() {
+        if (document.visibilityState === 'hidden') {
+            if (this.#state === 'running')
+                this.pause();
+        } else {
+            if (this.#state === 'paused')
+                this.run();
         }
     }
 }
