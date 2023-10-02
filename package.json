@@ -1,7 +1,7 @@
 {
   "name": "np2-wasm",
-  "version": "0.0.0",
-  "description": "PC-9801 emulator for the Web.",
+  "version": "0.1.0",
+  "description": "PC-98x1 emulator for the Web.",
   "keywords": [
     "emulator",
     "pc-9801",

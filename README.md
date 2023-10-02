@@ -23,7 +23,7 @@ example.html:
 example.js:
 
 ```js
-import { NP2, NP21 } from "https://unpkg.com/np2-wasm@0.0.0/dist/np2-wasm.js";
+import { NP2, NP21 } from "https://unpkg.com/np2-wasm/dist/np2-wasm.js";
 
 // Create an NP2 instance specifying a canvas
 const canvas = document.getElementById('canvas');

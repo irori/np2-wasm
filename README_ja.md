@@ -23,7 +23,7 @@ example.html:
 example.js:
 
 ```js
-import { NP2, NP21 } from "https://unpkg.com/np2-wasm@0.0.0/dist/np2-wasm.js";
+import { NP2, NP21 } from "https://unpkg.com/np2-wasm/dist/np2-wasm.js";
 
 // canvasを指定してNP2のインスタンスを作成
 const canvas = document.getElementById('canvas');
