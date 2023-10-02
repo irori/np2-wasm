@@ -49,9 +49,13 @@ np2.run();
 #### canvas: HTMLCanvasElement
 エミュレータの画面を表示する `<canvas>` 要素です。
 
-#### onDiskChange: (name: string) => void (optional)
+#### onDiskChange: (name: string) => void
 ディスクイメージに書き込みが行われたときに呼ばれるコールバックです。
 変更されたイメージは `getDiskImage()` メソッドで取得できます。
+
+#### onExit: () => void
+エミュレータの電源offが実行されたときに呼ばれるコールバックです。
+終了後は`reset()`でエミュレータを再起動できます。
 
 #### clk_base: number (default=2457600)
 CPU スピードのベースクロック (Hz) を指定します。1996800 か 2457600 が指定できます。
@@ -69,7 +73,7 @@ CPU スピードの倍率を決めます。実際の CPU スピードはこの�
 ### NP21.create(config: NP2Config): Promise\<NP21>
 `NP2.create()` と同じですが、PC-9821エミュレータ `NP21` のインスタンスを作成します。
 
-### state: 'ready' | 'running' | 'paused'
+### state: 'ready' | 'running' | 'paused' | 'exited'
 エミュレータの現在の状態を返します。
 
 ### run(): void

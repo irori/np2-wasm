@@ -12,6 +12,7 @@ async function create_np2() {
         clk_mult: 8,
         Latencys: 120,
         onDiskChange: (name) => console.log(name + ' changed'),
+        onExit: () => { np2.reset(); }
     });
 }
 

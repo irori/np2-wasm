@@ -25,7 +25,11 @@ void taskmng_initialize(void) {
 
 void taskmng_exit(void) {
 
+#ifdef __EMSCRIPTEN__
+	EM_ASM(Module.onExit());
+#else
 	task_avail = FALSE;
+#endif
 }
 
 void taskmng_rol(void) {

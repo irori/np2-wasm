@@ -4,6 +4,7 @@ import createNp21Module from "./np21.js";
 type NP2Config = {
     canvas: HTMLCanvasElement,
     onDiskChange?: (name: string) => void;
+    onExit?: () => void;
 
     // emulator configurations (src/sdl2/ini.c)
     pc_model?: string,
@@ -88,7 +89,7 @@ function applyDefaultConfig(config: NP2Config): NP2Config {
 }
 
 export class NP2 {
-    #state: 'loading' | 'ready' | 'running' | 'paused' = 'loading';
+    #state: 'loading' | 'ready' | 'running' | 'paused' | 'exited' = 'loading';
     private module: NP2Module;
     private config: NP2Config & { [key: string]: any };
 
@@ -121,6 +122,7 @@ export class NP2 {
                 this.#state = 'ready';
                 resolveReady(this);
             },
+            onExit: this.onExit.bind(this),
             getConfig: this.getConfig.bind(this),
             setConfig: this.setConfig.bind(this),
             onDiskChange: this.onDiskChange.bind(this),
@@ -143,7 +145,11 @@ export class NP2 {
     }
 
     reset() {
-        this.module.ccall('np2_reset', null, [], []);
+        if (this.#state === 'exited') {
+            this.#state = 'running';
+            this.module._np2_resume();
+        }
+        this.module._np2_reset();
     }
 
     addDiskImage(name: string, bytes: Uint8Array) {
@@ -277,6 +283,17 @@ export class NP2 {
                 console.warn('setConfig: ' + name + ' has unknown type ' + type);
                 break;
         }
+    }
+
+    private onExit() {
+        // This is called deep inside pccore, so do the actual work asynchronously.
+        setTimeout(() => {
+            this.pause();
+            this.#state = 'exited';
+            if (this.config.onExit) {
+                this.config.onExit();
+            }
+        }, 0);
     }
 
     private onDiskChange(pName: number) {

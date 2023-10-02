@@ -3,6 +3,7 @@ export interface NP2Module extends EmscriptenModule {
     ccall: typeof ccall;
     UTF8ToString: typeof UTF8ToString;
     stringToUTF8: typeof stringToUTF8;
+    _np2_reset: () => void;
     _np2_pause: () => void;
     _np2_resume: () => void;
     canvas: HTMLCanvasElement;

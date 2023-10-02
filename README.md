@@ -49,9 +49,13 @@ Creates a new instance of `NP2`. `config` is an object that has the following at
 #### canvas: HTMLCanvasElement
 The `<canvas>` element that displays the screen of the emulator.
 
-#### onDiskChange: (name: string) => void (optional)
+#### onDiskChange: (name: string) => void
 A callback function that is called when a write operation is performed to the disk image.
 The modified image can be retrieved with the `getDiskImage()` method.
+
+#### onExit: () => void
+A callback called when the emulator is powered off.
+After exit, you can restart the emulator with `reset()`.
 
 #### clk_base: number (default=2457600)
 Specifies the base clock (Hz) of the CPU. Either 1996800 or 2457600 can be specified.
@@ -69,7 +73,7 @@ Show the Neko Project II menu on middle-click or F11.
 ### NP21.create(config: NP2Config): Promise\<NP21>
 Same as `NP2.create()`, but this will create an instance of the PC-9821 emulator `NP21`.
 
-### state: 'ready' | 'running' | 'paused'
+### state: 'ready' | 'running' | 'paused' | 'exited'
 Returns the current state of the emulator.
 
 ### run(): void
