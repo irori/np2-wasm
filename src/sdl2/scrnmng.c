@@ -26,7 +26,11 @@ typedef struct {
 	int		height;
 } SCRNSTAT;
 
+#ifdef __EMSCRIPTEN__
+#define app_name NULL  // Avoid SDL_CreateWindow changing document.title
+#else
 static const char app_name[] = "Neko Project II";
+#endif
 
 static	SCRNMNG		scrnmng;
 static	SCRNSTAT	scrnstat;
