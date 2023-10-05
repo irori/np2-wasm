@@ -1,5 +1,4 @@
-import createNp2Module, {NP2Module} from "./np2.js";
-import createNp21Module from "./np21.js";
+import type {NP2Module} from "./np2.js";
 
 type NP2Config = {
     canvas: HTMLCanvasElement,
@@ -96,8 +95,9 @@ export class NP2 {
     get state() { return this.#state; }
 
     static create(config: NP2Config): Promise<NP2> {
-        return new Promise((resolve, reject) => {
-            new NP2(applyDefaultConfig(config), createNp2Module, resolve, reject);
+        return new Promise(async (resolve, reject) => {
+            const factory = (await import('./np2.js')).default;
+            new NP2(applyDefaultConfig(config), factory, resolve, reject);
         });
     }
 
@@ -315,8 +315,9 @@ export class NP2 {
 
 export class NP21 extends NP2 {
     static create(config: NP2Config): Promise<NP21> {
-        return new Promise((resolve, reject) => {
-            new NP21(applyDefaultConfig(config), createNp21Module, resolve, reject);
+        return new Promise(async (resolve, reject) => {
+            const factory = (await import('./np21.js')).default;
+            new NP21(applyDefaultConfig(config), factory, resolve, reject);
         });
     }
 }
