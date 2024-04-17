@@ -1,4 +1,4 @@
-import type {NP2Module} from "./np2.js";
+import type { MainModule as NP2Module } from "./np2.js";
 
 type NP2Config = {
     canvas: HTMLCanvasElement,
@@ -163,28 +163,28 @@ export class NP2 {
     setFdd(drive: number, name: string | null) {
         if (!name) {
             // Eject.
-            this.module.ccall('diskdrv_setfddex', null, ['number', 'number', 'number', 'number'], [drive, 0, 0, 0]);
+            this.module.ccall('diskdrv_setfddex', undefined, ['number', 'number', 'number', 'number'], [drive, 0, 0, 0]);
             return;
         }
         try {
-            this.module.FS.stat(name);
+            this.module.FS.stat(name, undefined);
         } catch (err) {
             throw new Error(`${name}: Invalid disk image name`)
         }
-        this.module.ccall('diskdrv_setfddex', null, ['number', 'string', 'number', 'number'], [drive, name, 0, 0]);
+        this.module.ccall('diskdrv_setfddex', undefined, ['number', 'string', 'number', 'number'], [drive, name, 0, 0]);
     }
 
     setHdd(drive: number, name: string | null) {
         if (!name) {
             // Disconnect.
-            this.module.ccall('diskdrv_setsxsi', null, ['number', 'number'], [drive, 0]);
+            this.module.ccall('diskdrv_setsxsi', undefined, ['number', 'number'], [drive, 0]);
         } else {
             try {
-                this.module.FS.stat(name);
+                this.module.FS.stat(name, undefined);
             } catch (err) {
                 throw new Error(`${name}: Invalid disk image name`)
             }
-            this.module.ccall('diskdrv_setsxsi', null, ['number', 'string'], [drive, name]);
+            this.module.ccall('diskdrv_setsxsi', undefined, ['number', 'string'], [drive, name]);
         }
         if (this.#state === 'ready') {
             this.reset();

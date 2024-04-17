@@ -44,18 +44,19 @@ endif()
 
 add_library(np2_dependencies INTERFACE)
 
-set(EM_LIBS "SHELL:-s USE_SDL=2")
+set(EM_LIBS -sUSE_SDL=2)
 target_compile_options(np2_dependencies INTERFACE ${EM_LIBS})
 target_link_options(np2_dependencies INTERFACE
   ${EM_LIBS}
-  "SHELL:-s ENVIRONMENT=web"
-  "SHELL:-s MODULARIZE=1"
-  "SHELL:-s EXPORT_ES6=1"
-  "SHELL:-s EXPORTED_RUNTIME_METHODS=FS,ccall,UTF8ToString,stringToUTF8"
+  -sENVIRONMENT=web
+  -sMODULARIZE=1
+  -sEXPORT_ES6=1
+  -sEXPORTED_RUNTIME_METHODS=FS,ccall,UTF8ToString,stringToUTF8
 )
 
 add_executable(np2)
 target_link_libraries(np2 PRIVATE np2_dependencies)
+target_link_options(np2 PRIVATE --emit-tsd=np2.d.ts)
 install(TARGETS np2 RUNTIME DESTINATION bin)
 
 target_include_directories(np2_dependencies INTERFACE
@@ -366,6 +367,7 @@ set(IA32_SOURCES
 
 add_executable(np21)
 target_link_libraries(np21 PRIVATE np2_dependencies)
+target_link_options(np21 PRIVATE --emit-tsd=np21.d.ts)
 
 install(TARGETS np21 RUNTIME DESTINATION bin)
 target_sources(np21 PRIVATE ${COMMON_SOURCES} ${IA32_SOURCES})

@@ -8,4 +8,5 @@ fi
 
 ninja -C out
 mkdir -p dist
-cp out/np2* dist/
+cp out/np{2,21}.{js,wasm} dist/
+cp out/np{2,21}.d.ts shell/

@@ -23,7 +23,6 @@
   "author": "irori <irorin@gmail.com>",
   "license": "BSD-3-Clause",
   "devDependencies": {
-    "@types/emscripten": "^1.39.7",
     "bdf": "github:erkkah/BDF.js",
     "typescript": "^5.2.2"
   }
