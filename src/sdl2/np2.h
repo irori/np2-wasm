@@ -6,6 +6,7 @@ typedef struct {
 	UINT8	resume;
 	UINT8	jastsnd;
 	UINT8	enable_menu;
+	UINT8	no_mouse;
 } NP2OSCFG;
 
 

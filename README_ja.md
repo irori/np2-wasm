@@ -70,6 +70,9 @@ CPU スピードの倍率を決めます。実際の CPU スピードはこの�
 #### use_menu: boolean (default=true)
 マウスの中クリックかF11キーでNeko Project IIのメニューを表示します。
 
+#### no_mouse: boolean (default=false)
+マウスを無効にします。
+
 ### NP21.create(config: NP2Config): Promise\<NP21>
 `NP2.create()` と同じですが、PC-9821エミュレータ `NP21` のインスタンスを作成します。
 

@@ -63,6 +63,7 @@ type NP2Config = {
     e_resume?: boolean,
     jast_snd?: boolean,
     use_menu?: boolean,
+    no_mouse?: boolean,
 }
 
 const enum IniType { // src/sdl2/ini.h

@@ -70,6 +70,9 @@ A smaller value will shorten the delay of the sound, but it will require more CP
 #### use_menu: boolean (default=true)
 Show the Neko Project II menu on middle-click or F11.
 
+#### no_mouse: boolean (default=false)
+Disables mouse emulation.
+
 ### NP21.create(config: NP2Config): Promise\<NP21>
 Same as `NP2.create()`, but this will create an instance of the PC-9821 emulator `NP21`.
 

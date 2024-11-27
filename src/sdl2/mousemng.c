@@ -1,5 +1,6 @@
 #include	"compiler.h"
 #include	"mousemng.h"
+#include	"np2.h"
 #ifdef __EMSCRIPTEN__
 #include	<emscripten/html5.h>
 #endif
@@ -28,8 +29,10 @@ void mousemng_initialize(void) {
 	mousemng.btn = uPD8255A_LEFTBIT | uPD8255A_RIGHTBIT;
 
 #ifdef __EMSCRIPTEN__
-	// This must be called after SDL_CreateRenderer()
-	emscripten_set_pointerlockchange_callback(EMSCRIPTEN_EVENT_TARGET_DOCUMENT, NULL, 0, on_pointerlockchange);
+	if (!np2oscfg.no_mouse) {
+		// This must be called after SDL_CreateRenderer()
+		emscripten_set_pointerlockchange_callback(EMSCRIPTEN_EVENT_TARGET_DOCUMENT, NULL, 0, on_pointerlockchange);
+	}
 #else
 	mousemng.showcount = 1;
 #endif
@@ -47,7 +50,9 @@ UINT8 mousemng_getstat(SINT16 *x, SINT16 *y, int clear) {
 
 void mousemng_hidecursor() {
 #ifdef __EMSCRIPTEN__
-	mousemng.captured = !SDL_SetRelativeMouseMode(SDL_TRUE);
+	if (!np2oscfg.no_mouse) {
+		mousemng.captured = !SDL_SetRelativeMouseMode(SDL_TRUE);
+	}
 #else
 	if (!--mousemng.showcount) {
 		SDL_ShowCursor(SDL_DISABLE);
@@ -58,8 +63,10 @@ void mousemng_hidecursor() {
 
 void mousemng_showcursor() {
 #ifdef __EMSCRIPTEN__
-	SDL_SetRelativeMouseMode(SDL_FALSE);
-	mousemng.captured = FALSE;
+	if (!np2oscfg.no_mouse) {
+		SDL_SetRelativeMouseMode(SDL_FALSE);
+		mousemng.captured = FALSE;
+	}
 #else
 	if (!mousemng.showcount++) {
 		SDL_ShowCursor(SDL_ENABLE);
@@ -82,7 +89,7 @@ void mousemng_buttonevent(SDL_MouseButtonEvent *button) {
 	UINT8 bit;
 
 #ifdef __EMSCRIPTEN__
-	if (!mousemng.captured) {
+	if (!np2oscfg.no_mouse && !mousemng.captured) {
 		if (button->button == SDL_BUTTON_LEFT && button->state == SDL_PRESSED)
 			mousemng_hidecursor();
 		return;
