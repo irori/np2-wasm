@@ -10,7 +10,9 @@
       div.emscripten_border { border: 1px solid black; }
       /* the canvas *must not* have any border or padding, or mouse coords will be wrong */
       canvas.emscripten { border: 0px none; }
-      .pixelated { image-rendering: pixelated; image-rendering: -moz-crisp-edges; }
+      @media screen and (min-resolution: 2dppx) {
+        canvas { image-rendering: pixelated; image-rendering: -moz-crisp-edges; }
+      }
     </style>
   </head>
   <body>
@@ -19,9 +21,6 @@
     </div>
     <hr/>
     <div class="emscripten">
-      <label for="smoothing">
-        <input type="checkbox" id="smoothing" checked onclick="document.getElementById('canvas').classList.toggle('pixelated')">Smoothing
-      </label>
       <input type="checkbox" id="resize">Resize canvas
       <input type="checkbox" id="pointerLock" checked>Lock/hide mouse pointer
       &nbsp;&nbsp;&nbsp;
