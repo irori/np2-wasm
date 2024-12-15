@@ -90,6 +90,14 @@ BRESULT scrnmng_create(int width, int height) {
 		fprintf(stderr, "Error: SDL_Init: %s\n", SDL_GetError());
 		return(FAILURE);
 	}
+#ifdef __EMSCRIPTEN__
+#if SDL_MAJOR_VERSION >= 3
+	EM_ASM({ specialHTMLTargets["!canvas"] = Module.canvas; });
+	SDL_SetHint(SDL_HINT_EMSCRIPTEN_CANVAS_SELECTOR, "!canvas");
+#else
+	EM_ASM({ specialHTMLTargets["#canvas"] = Module.canvas; });
+#endif
+#endif
 	s_sdlWindow = SDL_CreateWindow(app_name, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, 0);
 	s_renderer = SDL_CreateRenderer(s_sdlWindow, -1, 0);
 	SDL_RenderSetLogicalSize(s_renderer, width, height);
