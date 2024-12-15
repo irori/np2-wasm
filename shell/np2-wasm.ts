@@ -1,6 +1,6 @@
 import type { MainModule as NP2Module } from "./np2.js";
 
-type NP2Config = {
+export type NP2Config = {
     canvas: HTMLCanvasElement,
     onDiskChange?: (name: string) => void;
     onExit?: () => void;
