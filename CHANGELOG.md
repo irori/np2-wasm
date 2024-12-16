@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.3.1 - 2024-12-16
+- Fixed problem with custom elements not recognizing certain types of disk images.
+
 ## 0.3.0 - 2024-12-16
 - Added `<PC-9801>` and `<PC-9821>` custom elements.
 
