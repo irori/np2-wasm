@@ -1,6 +1,6 @@
 {
   "name": "np2-wasm",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "PC-98x1 emulator for the Web.",
   "keywords": [
     "emulator",
