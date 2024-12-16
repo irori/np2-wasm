@@ -33,15 +33,20 @@ class PC9801 extends HTMLElement {
         // Draw initial loading screen
         this.drawInitialScreen(canvas);
 
-        // Initiate fetches for disk images
-        const fetchImage = (url: string | null): Promise<ArrayBuffer> | null => {
+        // Fetch disk images
+        const fetchImage = async (url: string | null): Promise<{ name: string, data: Uint8Array } | null> => {
             if (!url) return null;
-            return fetch(url).then(response => response.arrayBuffer());
+            const resp = await fetch(url);
+            const data = new Uint8Array(await resp.arrayBuffer());
+            const name = url.split('/').pop()!;
+            return { name, data };
         };
-        const fdd1 = fetchImage(this.getAttribute('fdd1'));
-        const fdd2 = fetchImage(this.getAttribute('fdd2'));
-        const hdd1 = fetchImage(this.getAttribute('hdd1'));
-        const hdd2 = fetchImage(this.getAttribute('hdd1'));
+        const [fdd1, fdd2, hdd1, hdd2] = await Promise.all([
+            fetchImage(this.getAttribute('fdd1')),
+            fetchImage(this.getAttribute('fdd2')),
+            fetchImage(this.getAttribute('hdd1')),
+            fetchImage(this.getAttribute('hdd2')),
+        ]);
 
         // Configure NP2
         const config: NP2Config = { canvas };
@@ -50,20 +55,20 @@ class PC9801 extends HTMLElement {
 
         // Load disk images into NP2
         if (fdd1) {
-            np2.addDiskImage('fdd1', new Uint8Array(await fdd1));
-            np2.setFdd(0, 'fdd1');
+            np2.addDiskImage(fdd1.name, fdd1.data);
+            np2.setFdd(0, fdd1.name);
         }
         if (fdd2) {
-            np2.addDiskImage('fdd2', new Uint8Array(await fdd2));
-            np2.setFdd(1, 'fdd2');
+            np2.addDiskImage(fdd2.name, fdd2.data);
+            np2.setFdd(1, fdd2.name);
         }
         if (hdd1) {
-            np2.addDiskImage('hdd1', new Uint8Array(await hdd1));
-            np2.setHdd(0, 'hdd1');
+            np2.addDiskImage(hdd1.name, hdd1.data);
+            np2.setHdd(0, hdd1.name);
         }
         if (hdd2) {
-            np2.addDiskImage('hdd2', new Uint8Array(await hdd2));
-            np2.setHdd(1, 'hdd2');
+            np2.addDiskImage(hdd2.name, hdd2.data);
+            np2.setHdd(1, hdd2.name);
         }
 
         // Boot NP2
