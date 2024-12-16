@@ -18,7 +18,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/irori/np2-wasm.git"
+    "url": "git+https://github.com/irori/np2-wasm.git"
   },
   "author": "irori <irorin@gmail.com>",
   "license": "BSD-3-Clause",
