@@ -5,11 +5,25 @@ let fs = require('fs');
 let BDF = require('bdf');
 
 class FontBitmap {
-    constructor() {
-        this.width = 2048;
-        this.height = 2048;
-        this.buf = new Uint8Array(this.width * this.height / 8);
-        this.buf.fill(0xff);
+    constructor(base_image) {
+        if (base_image) {
+            const contents = fs.readFileSync(base_image);
+            const infoHeader = new DataView(contents.buffer, contents.byteOffset + 14, 40);
+            this.width = infoHeader.getUint32(4, true);
+            this.height = infoHeader.getUint32(8, true);
+            const dataOffset = 62;
+            const dataSize = this.width * this.height / 8;
+            if (contents.length < dataOffset + dataSize) {
+                throw new Error('BMP file is smaller than expected.');
+            }
+            const dataView = new Uint8Array(contents.buffer, contents.byteOffset + dataOffset, dataSize);
+            this.buf = new Uint8Array(dataView);
+        } else {
+            this.width = 2048;
+            this.height = 2048;
+            this.buf = new Uint8Array(this.width * this.height / 8);
+            this.buf.fill(0xff);
+        }
     }
 
     put(x, y, byte) {
@@ -50,26 +64,6 @@ function setank(bmp, bdf, from, to) {
     }
 }
 
-function patchank(bmp, font, offset, from) {
-    for (let c = from; c < from + 0x20; c++) {
-        for (let y = 0; y < 16; y++) {
-            bmp.put(c * 8, y, font[offset++]);
-        }
-    }
-}
-
-function patchextank(bmp, font, pos) {
-    for (let y = 0; y < 0x5e * 16; y++) {
-        bmp.put(pos * 16, y + 0x21 * 16, font[y]);
-    }
-}
-
-function patchextfnt(bmp, font) {
-    for (let y = 0; y < 0x4c * 16; y++) {
-        bmp.put(0x0c * 16, y + 0x24 * 16, font[y * 2]);
-        bmp.put(0x0c * 16 + 8, y + 0x24 * 16, font[y * 2 + 1]);
-    }
-}
 function setjis(bmp, font) {
     for (let h = 0x2100; h < 0x8000; h += 0x100) {
         for (let l = 0x21; l < 0x7f; l++) {
@@ -186,44 +180,23 @@ function loadBDF(fname) {
     return font;
 }
 
-function loadNP2FontData() {
-    const c = fs.readFileSync('../src/font/fontdata.res', 'utf8');
-    const js = '({' + c.replace(/const UINT8 (\w+)\[.*\] = \{/g, '$1: [').replace(/};/g, '],') + '})';
-    return eval(js);
-}
-
 function makepc98bmp(fname) {
     let shinonome_a = loadBDF('shnm8x16a.bdf');
     let shinonome_r = loadBDF('shnm8x16r.bdf');
     let shinonome = loadBDF('shnmk16.bdf');
-    let np2 = loadNP2FontData();
 
-    let bmp = new FontBitmap();
+    let bmp = new FontBitmap('base/base.bmp');
     // ASCII
-    setank(bmp, shinonome_a, 0x20, 0x7e);
+    //setank(bmp, shinonome_a, 0x20, 0x7e);
     // 0x5c is YEN SIGN
-    setank(bmp, shinonome_r, 0x5c, 0x5c);
+    //setank(bmp, shinonome_r, 0x5c, 0x5c);
     // 1-byte Kana
-    setank(bmp, shinonome_r, 0xa1, 0xdf);
-
-    // Control characters
-    patchank(bmp, np2.fontdata_16, 0 * 32 * 16, 0x00);
-    // 1-byte symbols
-    patchank(bmp, np2.fontdata_16, 1 * 32 * 16, 0x80);
-    patchank(bmp, np2.fontdata_16, 2 * 32 * 16, 0xe0);
+    //setank(bmp, shinonome_r, 0xa1, 0xdf);
 
     // JIS
     setjis(bmp, shinonome);
 
-    // 2-byte half-width characters
-    patchextank(bmp, np2.fontdata_29, 0x09);
-    patchextank(bmp, np2.fontdata_2a, 0x0a);
-    patchextank(bmp, np2.fontdata_2b, 0x0b);
-
-    // Box-drawing characters (JIS 2c20-2c6f)
-    patchextfnt(bmp, np2.fontdata_2c);
-
     bmp.writeToFile(fname);
 }
 
-makepc98bmp('../dist/font.bmp')
+makepc98bmp('font.bmp')
