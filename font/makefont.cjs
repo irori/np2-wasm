@@ -22,6 +22,7 @@ class FontBitmap {
         let infoHeader = new DataView(buf, 14, 40);
         let palette = new DataView(buf, 54, 8);
         fileHeader.setUint16(0, 0x424d, false); // 'BM'
+        fileHeader.setUint32(2, buf.byteLength + this.buf.byteLength, true); // bfSize
         fileHeader.setUint32(10, buf.byteLength, true);  // bfOffBits
         infoHeader.setUint32(0, infoHeader.byteLength, true); // biSize
         infoHeader.setUint32(4, this.width, true); // biWidth
